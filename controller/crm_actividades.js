@@ -6,23 +6,25 @@ var app_angular= angular.module('PedidosOnline');
 app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams', '$window',function (Conexion,$scope,$routeParams,$window) {
 	$scope.Latitude='';
 	$scope.Longitud='';
+	var options = {enableHighAccuracy: true, timeout: 4000, maximumAge: 18000000};
 	function geolocation()
     {
-        var options = {enableHighAccuracy: true, timeout: 20000, maximumAge: 18000000};
+        
         var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
         function onSuccess(position)
         {
-        	debugger
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-
-            alert("GPS is ready");
+        	$scope.Latitude=position.coords.latitude;
+			$scope.Longitud= position.coords.longitude;
         }
         function onError(error)
         {
-        	alert("Enable your GPS!");
+        	alert("Por favor habilitar la Ubicacion!");
         }
+    }
+    $scope.Reload=function()
+    {
+    	location.reload();
     }
     $(document).ready(function () {
         geolocation();
@@ -175,31 +177,19 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 		$('#fc_create').click();
 	}
 	$scope.guardarActividad=function(){
-		try {
-	        if (navigator.geolocation) {
-		    	navigator.geolocation.getCurrentPosition(function(position){
-		        $scope.$apply(function(){
-		        	$scope.position = position;
-		        	$scope.Longitud=position.coords.longitude;
-		        	$scope.Latitude=position.coords.latitude;
-		        	$scope.EnviarRegistro();
-			        
-			      });
-			    },function(error){
-			    	
-			    	$scope.EnviarRegistro();
-			    });
-		  }
-		  else 
-		  {
-		  	 $scope.url='error no soportado la localizacion'
-		  	 $scope.EnviarRegistro();
-		  }
-		}
-		catch(error) {
-			alert(error.message);
-		}
-		
+
+		var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+        function onSuccess(position)
+        {
+        	$scope.Latitude=position.coords.latitude;
+			$scope.Longitud= position.coords.longitude;
+            $scope.EnviarRegistro();
+        }
+        function onError(error)
+        {
+        	alert("Por favor habilitar la Ubicacion!");
+        }
         
 	}
 	$scope.EnviarRegistro=function(){
