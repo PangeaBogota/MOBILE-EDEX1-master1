@@ -3,10 +3,9 @@
 
 var app_angular= angular.module('PedidosOnline');
 
-app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams',function (Conexion,$scope,$routeParams) {
+app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams', '$window',function (Conexion,$scope,$routeParams,$window) {
 	$scope.Latitude='';
 	$scope.Longitud='';
-
 	try {
         if (navigator.geolocation) {
 	    	navigator.geolocation.getCurrentPosition(function(position){
@@ -16,26 +15,25 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 	        	$scope.Latitude=position.coords.latitude;
 		      });
 		    },function(error){
-		    	alert('Encender Localizacion');
 		    	switch(error.code) {
 				    case error.PERMISSION_DENIED:
-				      x.innerHTML = "User denied the request for Geolocation."
+				      alert("User denied the request for Geolocation.")
 				      break;
 				    case error.POSITION_UNAVAILABLE:
-				      x.innerHTML = "Location information is unavailable."
+				      alert("Location information is unavailable.")
 				      break;
 				    case error.TIMEOUT:
-				      x.innerHTML = "The request to get user location timed out."
+				      alert("The request to get user location timed out.")
 				      break;
 				    case error.UNKNOWN_ERROR:
-				      x.innerHTML = "An unknown error occurred."
+				      alert("An unknown error occurred.")
 				      break;
 		  		}
 		    });
 	  }
 	  else 
 	  {
-	  	alert('Encender Localizacion');
+	  	alert('Error geo');
 	  	$scope.url='error no soportado la localizacion'
 	  }
 	}
