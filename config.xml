@@ -38,7 +38,7 @@
         Define a specific version of PhoneGap to build into your app.
        
     -->
-    <preference name="phonegap-version"       value="3.5.0" />
+    <preference name="phonegap-version"       value="cli-5.4.1" />
     <!-- Plugins -->
 
 
@@ -111,7 +111,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    
+
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
     <plugin name="cordova-plugin-geolocation" source="npm" />
