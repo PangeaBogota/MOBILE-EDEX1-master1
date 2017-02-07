@@ -35,10 +35,12 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 	  }
 	  else 
 	  {
-	  	 $scope.url='error no soportado la localizacion'
+	  	alert('Encender Localizacion');
+	  	$scope.url='error no soportado la localizacion'
 	  }
 	}
 	catch(error) {
+		alert(error.message)
 	}
 	$scope.Search;
 	$scope.registro=[];
@@ -175,6 +177,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 		  }
 		}
 		catch(error) {
+			alert(error.message);
 		}
 		
         
