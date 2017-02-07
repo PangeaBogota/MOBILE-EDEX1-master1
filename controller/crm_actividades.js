@@ -21,12 +21,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
         }
         function onError(error)
         {
-        	debugger
-            if (error.code == 1)
-            {
-                alert("Enable your GPS!");
-            }
-            console.log("GPS is NOT ready");
+        	alert("Enable your GPS!");
         }
     }
     $(document).ready(function () {
