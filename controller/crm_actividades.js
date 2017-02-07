@@ -6,12 +6,36 @@ var app_angular= angular.module('PedidosOnline');
 app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams', '$window',function (Conexion,$scope,$routeParams,$window) {
 	$scope.Latitude='';
 	$scope.Longitud='';
-	$window.alert('entro')
-	try {
+	function geolocation()
+    {
+        var options = {enableHighAccuracy: true, timeout: 20000, maximumAge: 18000000};
+        var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+
+        function onSuccess(position)
+        {
+        	debugger
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            alert("GPS is ready");
+        }
+        function onError(error)
+        {
+        	debugger
+            if (error.code == 1)
+            {
+                alert("Enable your GPS!");
+            }
+            console.log("GPS is NOT ready");
+        }
+    }
+    $(document).ready(function () {
+        geolocation();
+    });
+	/*try {
         if (navigator.geolocation) {
 	    	navigator.geolocation.getCurrentPosition(function(position){
 	        $scope.$apply(function(){
-	        	$window.alert('entro1')
 	        	$scope.position = position;
 	        	$scope.Longitud=position.coords.longitude;
 	        	$scope.Latitude=position.coords.latitude;
@@ -42,7 +66,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 	}
 	catch(error) {
 		alert(error.message)
-	}
+	}*/
 	$scope.Search;
 	$scope.registro=[];
 	$scope.terceroSelected;
