@@ -6,15 +6,18 @@ var app_angular= angular.module('PedidosOnline');
 app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams', '$window',function (Conexion,$scope,$routeParams,$window) {
 	$scope.Latitude='';
 	$scope.Longitud='';
+	$window.alert('entro')
 	try {
         if (navigator.geolocation) {
 	    	navigator.geolocation.getCurrentPosition(function(position){
 	        $scope.$apply(function(){
+	        	$window.alert('entro1')
 	        	$scope.position = position;
 	        	$scope.Longitud=position.coords.longitude;
 	        	$scope.Latitude=position.coords.latitude;
 		      });
 		    },function(error){
+		    	$window.alert('Encender Localizacion');
 		    	switch(error.code) {
 				    case error.PERMISSION_DENIED:
 				      alert("User denied the request for Geolocation.")
