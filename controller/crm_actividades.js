@@ -19,7 +19,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
         }
         function onError(error)
         {
-        	alert("Por favor habilitar la Ubicacion!");
+        	alert("Por favor habilitar la Ubicacion, Verificar Conexion a Internet!");
         }
     }
     $scope.Reload=function()
@@ -188,7 +188,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
         }
         function onError(error)
         {
-        	alert("Por favor habilitar la Ubicacion!");
+        	alert("Por favor habilitar la Ubicacion, Verificar Conexion a Internet!");
         }
         
 	}
