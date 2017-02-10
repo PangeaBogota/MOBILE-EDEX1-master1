@@ -43,11 +43,12 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
     $scope.confirmarSincronizacion=function(){
         $('#openConfirmacion').click();   
     }
-    CRUD.select("select count(*) a from erp_terceros  ",function(elem){
+    /*CRUD.select("select count(*) a from erp_terceros  ",function(elem){
         console.log(elem.a)
-    });
+    });*/
     
     $scope.sincronizar=function(){
+        $scope.errorAlerta.bandera=0;
         ProcesadoShow();
         $scope.sincronizarPedidos();
         window.setTimeout(function(){

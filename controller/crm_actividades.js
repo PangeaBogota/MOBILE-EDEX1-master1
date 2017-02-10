@@ -11,7 +11,6 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
     {
         
         var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-
         function onSuccess(position)
         {
         	$scope.Latitude=position.coords.latitude;
