@@ -773,10 +773,10 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     }).then(
                     function success(data) { 
                          CRUD.Updatedynamic("update crm_actividades set sincronizado='true' where rowid="+data.data.rowid+"");
-                         $scope.errorAlerta.bandera=1;
+                         
                     }, 
                     function error(err) {
-
+                        $scope.errorAlerta.bandera=1;
                     }) 
             }
         });
