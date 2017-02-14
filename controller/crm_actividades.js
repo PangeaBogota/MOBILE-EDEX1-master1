@@ -207,6 +207,13 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 			$scope.NuevoEvento.fecha_creacion=$scope.CurrentDate();
 			CRUD.insert('crm_actividades',$scope.NuevoEvento)
 			$scope.NuevoEvento=[];
+			$scope.localizacionRegistro=[];
+			$scope.localizacionRegistro.latitud=$scope.Latitude;
+			$scope.localizacionRegistro.longitud=$scope.Longitud;
+			$scope.localizacionRegistro.descripcion='Creacion';
+			$scope.localizacionRegistro.rowid_actividad=$scope.ultimoRegistroseleccionado.rowid+1;
+			CRUD.insert('crm_localizacion',$scope.localizacionRegistro)
+			
 			$scope.RefrescarVista();
 			$('.antoclose').click();
 	        Mensajes('Actividad Nueva Creada','success','');
@@ -243,6 +250,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 				{
 					elem.condicion=false;
 				}
+				$scope.estado=elem.rowid_estado
 				$scope.actividad=elem;
 			});
             //CRUD.selectParametro('crm_actividades','rowid',calEvent.id,function(elem){$scope.actividadSelected.push(elem);$scope.actividad=$scope.actividadSelected[0]});
@@ -250,6 +258,29 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 
         }
 	}
+	$scope.ActualizarActividad=function(){
+		var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+        function onSuccess(position)
+        {
+        	CRUD.Updatedynamic("update crm_actividades set rowid_estado='"+$scope.estado+"',sincronizado='false' where rowid="+$scope.actividad.rowid+"");	
+			$scope.localizacionRegistro=[];
+			$scope.Latitude=position.coords.latitude;
+			$scope.Longitud= position.coords.longitude;
+			$scope.localizacionRegistro.latitud=$scope.Latitude;
+			$scope.localizacionRegistro.descripcion='Modificacion';
+			$scope.localizacionRegistro.longitud=$scope.Longitud;
+			$scope.localizacionRegistro.rowid_actividad=$scope.actividad.rowid;
+			CRUD.insert('crm_localizacion',$scope.localizacionRegistro)
+			$scope.Latitude='';
+			$scope.Longitud='';
+        }
+        function onError(error)
+        {
+        	alert("Por favor habilitar la Ubicacion, Verificar Conexion a Internet!");
+        }
+		
+	}
+	$scope.estado="";
 	$scope.ConsultarDia=function(day){
 		var Day=new Date(day);
 		var YearS=Day.getFullYear();

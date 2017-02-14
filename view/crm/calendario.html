@@ -262,6 +262,17 @@
                                                            Fecha Final :<strong>  {{actividad.fecha_final}}</strong>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12" style="margin: 1px">
+                                                         <div class="form-group col-md-12" style="margin: 1px">
+                                                             Estado: <select  required
+                                                    ng-model="estado"  ng-options="partner.id_estado as partner.nombre_estado 
+                                                    for partner in listEstadoActividad " class="form-control"  >
+                                                </select>
+                                                        </div>
+                                                           
+                                                        </div>
+                                                    </div>
                                                 </a>
                                             </div>  
                                         </div>
@@ -269,6 +280,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-primary " ng-click="ActualizarActividad()" data-dismiss="modal">Actualizar</button>
                                 <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>

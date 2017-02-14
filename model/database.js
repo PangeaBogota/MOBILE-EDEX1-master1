@@ -331,10 +331,35 @@ app_angular.service('Factory', function ($webSql) {
         "longitud": {
             "type": "text",
             "null": "NULL"
+        },
+        "rowid_web": {
+            "type": "INTEGER",
+            "null": "NULL"
         }
-
-
-
+    })
+    db.createTable('crm_localizacion',{
+         "rowid": {
+             "type": "INTEGER",
+            "null": "NOT NULL",
+            "primary": true,
+            "auto_increment": true 
+        },
+        "latitud": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "longitud": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_actividad": {
+            "type": "integer",
+            "null": "NULL"
+        },
     })
     db.createTable('erp_items', {
         //1
@@ -1721,6 +1746,7 @@ app_angular.service('Factory', function ($webSql) {
         " usu.id_canal_vendedor as canal,act.tipo,act.tema,  " +
         " act.ind_prioridad,act.descripcion, " +
         " act.fecha_inicial,act.fecha_final,act.rowid," +
+        " act.rowid_estado,"+
         " usu.nombre_completo  as usuario , "+
         " case when usu.id_canal_vendedor=null  then  'false'  else  'true' end as cond " +
         " from " +

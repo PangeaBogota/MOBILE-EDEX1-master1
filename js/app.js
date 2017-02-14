@@ -79,6 +79,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
             CRUD.Updatedynamic("delete from crm_contactos");
             CRUD.Updatedynamic("delete from s_usuarios");
             CRUD.Updatedynamic("delete from s_canales_usuario");
+            CRUD.Updatedynamic("delete from crm_localizacion");
             
             //
             Sincronizar($scope.sessiondate.nombre_usuario,$scope.sessiondate.codigo_empresa);
@@ -482,7 +483,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_modificacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_modificacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_relacion+
-                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+"','','' "; 
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+"','','','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+"' "; 
                         if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)
                             NewQuery=true;
@@ -772,8 +773,38 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     async:false,
                     }).then(
                     function success(data) { 
-                         CRUD.Updatedynamic("update crm_actividades set sincronizado='true' where rowid="+data.data.rowid+"");
-                         
+                         CRUD.Updatedynamic("update crm_actividades set rowid_web='"+data.data.rowid_web+"',sincronizado='true' where rowid="+data.data.rowid+"");
+                          //$scope.envioLocalizacion(data.data.rowid_web);
+                    }, 
+                    function error(err) {
+                        $scope.errorAlerta.bandera=1;
+                    }) 
+            }
+        });
+    }
+    $scope.envioLocalizacion=function()
+    {
+        $scope.usuario=$scope.sessiondate.nombre_usuario;
+        $scope.codigoempresa=$scope.sessiondate.codigo_empresa;         
+        CRUD.selectAllinOne('select l.*,a.rowid_web from crm_localizacion l inner join crm_actividades a on  a.rowid=l.rowid_actividad',function(Actividad){
+
+            if (Actividad.length==0) {
+                $scope.MensajeEnvioVacioAct=1;
+            }
+            else
+            {
+                $scope.MensajeEnvioVacioAct=0;
+            }
+            for (var i =0;i<Actividad.length;i++) {
+                var rowidActividad=Actividad[i].rowid;
+                $http({
+                    method: 'GET',
+                    url: 'http://demoedex.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=LOCALIZACION&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify(Actividad[i]),
+                    async:false,
+                    }).then(
+                    function success(data) { 
+                         CRUD.Updatedynamic("delete crm_localizacion where  rowid="+data.data.rowid+"");
+                   
                     }, 
                     function error(err) {
                         $scope.errorAlerta.bandera=1;
@@ -786,8 +817,10 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
     $scope.sincronizarPedidos=function()
     {
         $scope.EnvioActividades();
+
         $scope.CreacionPlano();
         setTimeout(function() {
+            $scope.envioLocalizacion();
             $scope.envioPlano();
         },5000);
         
@@ -795,12 +828,10 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
     $scope.CreacionPlano=function()
     {
         CRUD.selectAllinOne("select*from t_pedidos where  sincronizado='false'",function(Pedidos){
-            debugger
             for (var i =0;i<Pedidos.length;i++) {
                 $scope.SentenciaPlano=$scope.queryBuild.replace('__REQUIRED',Pedidos[i].rowid);
                 //$scope.queryBuild=$scope.queryBuild.replace('__REQUIRED',Pedidos[i].rowid);
                 CRUD.selectAllinOne($scope.SentenciaPlano,function(ped){
-                    debugger
                     var rowidPedido=0;
                     var contador=0;
                     var  stringSentencia='';
